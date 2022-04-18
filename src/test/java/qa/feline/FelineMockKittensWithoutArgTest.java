@@ -4,47 +4,33 @@ import com.example.Feline;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import java.util.Arrays;
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FelineMockKittensWithoutArgTest{
 
-    @Mock
-    Feline feline;
-
+    //Навание теста: getKittens() должен вызвать getKittens(1) и вернуть количество котят 1.
+    //Здесь не нужна параметризация, так как getKittens() не принимает никаких аргументов.
+    //Здесь нужно частично мокать класс Feline, потому что я проверяю работу метода getKittens(),
+    //а он как раз вызывает другой метод, который я здесь не проверяю(проверяю в другом тесте), поэтому
+    //я и мокаю метод getKittens(int kittensCount)
     @Test
-    public void getKittensWithoutArgShouldGetKittensWithArgOne(){
-        Mockito.when(feline.getKittens()).thenCallRealMethod();
-        feline.getKittens();
-        Mockito.verify(feline).getKittens(1);
-    }
-
-    @Test
-    public void getKittensWithoutArgShowKittensCountOne(){
-        Mockito.when(feline.getKittens(Mockito.anyInt())).thenReturn(1);
-        Mockito.when(feline.getKittens()).thenCallRealMethod();
-        int expectedKittensCount = 1;
-        int actualKittensCount = feline.getKittens();
+    public void getKittensWithoutArgShouldCalledGetKittensWithArgOneAndShowKittensCountOne(){
+        Feline feline = new Feline();
+        Feline felineMock = Mockito.mock(Feline.class);
+        Mockito.when(felineMock.getKittens()).thenCallRealMethod();
+        int expectedKittensCount = feline.getKittens(1);
+        int actualKittensCount = 0;
+        boolean getKittensCalled = true;
+        try {
+            felineMock.getKittens();
+            Mockito.verify(felineMock).getKittens(1);
+            actualKittensCount = feline.getKittens();
+        } catch (Exception | Error exEr) {
+            getKittensCalled = false;
+        }
+        Assert.assertTrue("Похоже в классе Feline метод getKittens() либо не вызывает getKittens(1), либо вызывает его с другим аргументом", getKittensCalled);
         Assert.assertEquals("Ошибка в методе getKittens(), он должен возвращать одного котёнка.", expectedKittensCount, actualKittensCount);
-    }
-
-    @Test
-    public void eatMeatShouldGetFoodWithArgPredator() throws Exception {
-        Mockito.when(feline.eatMeat()).thenCallRealMethod();
-        feline.eatMeat();
-        Mockito.verify(feline).getFood("Хищник");
-    }
-
-    @Test
-    public  void eatMeatShowListFoodOfPredator() throws Exception {
-        Mockito.when(feline.getFood(Mockito.anyString())).thenReturn(Arrays.asList("Животные", "Птицы", "Рыба"));
-        Mockito.when(feline.eatMeat()).thenCallRealMethod();
-        List<String> expectedListFood = Arrays.asList("Животные", "Птицы", "Рыба");
-        List<String> actualListFood = feline.eatMeat();
-        Assert.assertEquals("Метод eatMeat() в классе Feline, он возвращает не то значение.", expectedListFood, actualListFood);
     }
 }

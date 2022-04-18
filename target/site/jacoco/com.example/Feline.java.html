@@ -19,12 +19,10 @@ import java.util.List;
     }
 
     public int getKittens(int kittensCount) {
-<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (kittensCount &gt;= 0) {</span>
-<span class="fc" id="L23">            return kittensCount;</span>
-        }else {
-<span class="fc" id="L25">            throw new IllegalArgumentException(&quot;не бывает отрицательных котят&quot;);</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (kittensCount &lt; 0){</span>
+<span class="fc" id="L23">            throw  new IllegalArgumentException();</span>
         }
-
+<span class="fc" id="L25">        return kittensCount;</span>
     }
 
 }

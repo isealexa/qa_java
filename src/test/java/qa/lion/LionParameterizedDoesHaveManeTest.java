@@ -1,5 +1,6 @@
 package qa.lion;
 
+import com.example.Feline;
 import com.example.Lion;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +28,8 @@ public class LionParameterizedDoesHaveManeTest {
 
     @Test
     public void doesHaveManeForCorrectValueShowTrueOrFalse() throws Exception {
-        Lion lion = new Lion(checkedSex);
+        Feline feline = new Feline();
+        Lion lion = new Lion(checkedSex, feline);
         boolean actualHasMane = lion.doesHaveMane();
         Assert.assertEquals("Метод doesHaveMane() в классе Lion не может определить есть ли грива.", expectedHasMane, actualHasMane);
     }

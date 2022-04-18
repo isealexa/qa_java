@@ -19,17 +19,23 @@ public class LionMockGetFoodTest {
 
     @Test
     public void getFoodShouldGetFootWithArgPredator() throws Exception {
-        Lion lion = new Lion(feline);
-        lion.getFood();
-        Mockito.verify(feline).getFood("Хищник");
+        Lion lion = new Lion("Самка", feline);
+        boolean notExceptionOrError = true;
+        try {
+            lion.getFood();
+            Mockito.verify(feline).getFood("Хищник");
+        } catch (Exception | Error exEr) {
+            notExceptionOrError = false;
+        }
+        Assert.assertTrue("Кажется метод getFood() в классе Lion не вызывает метод getFood(Хищник) или вызывает неправильно.", notExceptionOrError);
     }
 
     @Test
     public void getFoodShowListFoodOfPredator() throws Exception {
-        Lion lion = new Lion(feline);
+        Lion lion = new Lion("Самец", feline);
         Mockito.when(feline.getFood(Mockito.anyString())).thenReturn(Arrays.asList("Животные", "Птицы", "Рыба"));
         List<String> expectedListFood = Arrays.asList("Животные", "Птицы", "Рыба");
         List<String> actualListFood = lion.getFood();
-        Assert.assertEquals("Метод getFood() в классе Lion, он возвращает не то значение.", expectedListFood, actualListFood);
+        Assert.assertEquals("Метод getFood() в классе Lion возвращает не то значение.", expectedListFood, actualListFood);
     }
 }
